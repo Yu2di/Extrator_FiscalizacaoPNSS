@@ -1,0 +1,15 @@
+{
+  "qInfo": {
+    "qId": "f5be1d99-5ed0-4f96-8b34-45b935b2f43d",
+    "qType": "variable"
+  },
+  "qMetaDef": {},
+  "qName": "v.Tabela.FichaSanitariaPropriedade",
+  "qNumberPresentation": {
+    "qType": "U",
+    "qnDec": 10,
+    "qUseThou": 0
+  },
+  "qDefinition": "FichaSanitariaPropriedade",
+  "qIsScriptCreated": true
+}

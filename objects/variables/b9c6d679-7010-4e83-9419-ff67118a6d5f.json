@@ -1,0 +1,15 @@
+{
+  "qInfo": {
+    "qId": "b9c6d679-7010-4e83-9419-ff67118a6d5f",
+    "qType": "variable"
+  },
+  "qMetaDef": {},
+  "qName": "v.Base.Transformados",
+  "qNumberPresentation": {
+    "qType": "U",
+    "qnDec": 10,
+    "qUseThou": 0
+  },
+  "qDefinition": "lib://PASTA/Transformados/Saldos",
+  "qIsScriptCreated": true
+}

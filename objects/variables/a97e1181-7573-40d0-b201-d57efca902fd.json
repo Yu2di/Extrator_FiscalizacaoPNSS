@@ -1,0 +1,15 @@
+{
+  "qInfo": {
+    "qId": "a97e1181-7573-40d0-b201-d57efca902fd",
+    "qType": "variable"
+  },
+  "qMetaDef": {},
+  "qName": "v.Tabela.Propriedade",
+  "qNumberPresentation": {
+    "qType": "U",
+    "qnDec": 10,
+    "qUseThou": 0
+  },
+  "qDefinition": "Propriedade",
+  "qIsScriptCreated": true
+}

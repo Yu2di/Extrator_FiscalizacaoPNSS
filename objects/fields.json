@@ -1,0 +1,676 @@
+[
+  {
+    "qName": "1 - Estabelecimentos rurais localizados em fronteiras internacionais ou divisas com Estados, países ou zonas não livres de PSC, PSA e PRRS",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "10 - Proximidade a quarentenários de suídeos",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "11 - Estabelecimentos rurais pertencentes a proprietários que comercializam suínos para zonas não livres",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "12 - Estabelecimentos rurais contíguos ou próximos a laboratórios autorizados a manusear material infeccioso para PSC, PSA e PRRS",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "13 - Estabelecimento com suínos contíguos ou próximos a paradas de ônibus com origem em zonas não livres",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "2 - Proximidade a reservas naturais, áreas de proteção ambiental ou parques nacionais com a presença de suínos asselvajados",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "3 - Estabelecimentos rurais em assentamentos rurais, aldeias indígenas, áreas periurbanas, comunidades carentes ou qualquer outra situação em que a biosseguridade esteja comprometida e o sistema de pecuária exija atenção veterinária especial pelo SVO",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "4 - Propriedades com suídeos criados extensivamente",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "5 - Estabelecimentos rurais contíguos ou próximos a locais de ingresso internacional de pessoas e produtos como aeroportos, portos, ferrovias, rodoviárias e postos de fronteira internacional e divisas com zonas não livres",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "6 - Estabelecimentos rurais com suínos com fornecimento de resíduos alimentares (lavagem) aos suínos",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "7. Proximidade a lixões",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "8 - Estabelecimentos rurais pertencentes a proprietários que mantêm suínos em diferentes estabelecimentos, especialmente em outros países ou zona não livre de PSC, PSA e PRRS",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "9 - Estabelecimentos rurais contíguos ou próximos a abatedouros frigoríficos ou graxarias",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Animais com estado corporal satisfatório",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Animais sem sinais clínicos de doenças",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Ano Fiscalização",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "CPF/CNPJ",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "CapacidadeAlojamento",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Colheita de Material",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Cód. IBGE",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Código MAPA",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Data Fiscalização",
+    "qTags": [
+      "$numeric",
+      "$timestamp"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "E-mail",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "FMEI Tema",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "FMEI Tipo Material Educativo",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Ficha Sanitária Propriedade ID",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Fiscalização Hora/Minuto",
+    "qTags": [
+      "$numeric",
+      "$timestamp"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "FÊMEA ADULTO",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "FÊMEA LEITÃO",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "I - FÊMEA ADULTO",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "I - FÊMEA LEITÃO",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "I - MACHO ADULTO",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "I - MACHO LEITÃO",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Inscrição",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Inspecionados",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Latitude",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Latitude Decimal",
+    "qTags": [
+      "$numeric"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Longitude",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Longitude Decimal",
+    "qTags": [
+      "$numeric"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "MACHO ADULTO",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "MACHO LEITÃO",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Medidas Educativas",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Município da Fiscalização",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Mês da Fiscalização",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Nome",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Nome Equipe",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Nº Leituras Realizadas",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Nº de Tuberculinização realizadas",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Nº do Relatório",
+    "qTags": [
+      "$numeric",
+      "$integer",
+      "$timestamp",
+      "$date"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Núcleo",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Núcleo Classificação",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Número de Raspados de pele realizados",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Participante Função",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Participante Nome",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Possui animais ?",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Produtor",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Quantidade de Galpões",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Quantidade de Material Entregue",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Raspado de Pele",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Situação",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "TOTAL DE ANIMAIS",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Telefone",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Tipo Local",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Tipo de Vistoria",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Total de amostras - Soro Sanguíneo",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Unidade Regional",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Vistoriados",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "chave_cargo_equipe",
+    "qTags": [
+      "$text",
+      "$ascii"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "flag",
+    "qTags": [
+      "$numeric",
+      "$integer"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  },
+  {
+    "qName": "Área de Atuação",
+    "qTags": [
+      "$text"
+    ],
+    "qSrcTables": [
+      "Atividade_Suinos"
+    ]
+  }
+]

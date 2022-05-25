@@ -1,0 +1,14 @@
+{
+  "qInfo": {
+    "qId": "4e3403a2-3796-4fd6-aba9-cfeca34a150e",
+    "qType": "variable"
+  },
+  "qMetaDef": {},
+  "qName": "v.DataMax",
+  "qNumberPresentation": {
+    "qType": "U",
+    "qnDec": 10,
+    "qUseThou": 0
+  },
+  "qDefinition": "44642"
+}

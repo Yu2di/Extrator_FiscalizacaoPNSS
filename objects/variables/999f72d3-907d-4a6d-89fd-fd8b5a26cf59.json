@@ -1,0 +1,15 @@
+{
+  "qInfo": {
+    "qId": "999f72d3-907d-4a6d-89fd-fd8b5a26cf59",
+    "qType": "variable"
+  },
+  "qMetaDef": {},
+  "qName": "v.Schema",
+  "qNumberPresentation": {
+    "qType": "U",
+    "qnDec": 10,
+    "qUseThou": 0
+  },
+  "qDefinition": "eSaniagroDadosGerenciais.dbo",
+  "qIsScriptCreated": true
+}

@@ -1,0 +1,15 @@
+{
+  "qInfo": {
+    "qId": "de5902db-b44a-41e9-bce9-ce2d628fdb5f",
+    "qType": "variable"
+  },
+  "qMetaDef": {},
+  "qName": "v.Tabela.FichaSanitaria",
+  "qNumberPresentation": {
+    "qType": "U",
+    "qnDec": 10,
+    "qUseThou": 0
+  },
+  "qDefinition": "FichaSanitaria",
+  "qIsScriptCreated": true
+}

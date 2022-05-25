@@ -1,0 +1,15 @@
+{
+  "qInfo": {
+    "qId": "a47104e5-7169-4992-ada6-26743c1ec8e4",
+    "qType": "variable"
+  },
+  "qMetaDef": {},
+  "qName": "v.Base.TransformadosFiscalizacao",
+  "qNumberPresentation": {
+    "qType": "U",
+    "qnDec": 10,
+    "qUseThou": 0
+  },
+  "qDefinition": "lib://PASTA/Transformados/Fiscalizacao",
+  "qIsScriptCreated": true
+}

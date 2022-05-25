@@ -1,0 +1,15 @@
+{
+  "qInfo": {
+    "qId": "3441ade5-71c5-4c8c-a566-61da938c9e3a",
+    "qType": "variable"
+  },
+  "qMetaDef": {},
+  "qName": "v.Base.Saneamentos",
+  "qNumberPresentation": {
+    "qType": "U",
+    "qnDec": 10,
+    "qUseThou": 0
+  },
+  "qDefinition": "lib://PASTA/Saneamentos/PropriedadesFichasSanitarias",
+  "qIsScriptCreated": true
+}

@@ -1,0 +1,64 @@
+{
+  "qInfo": {
+    "qId": "c4b1b30a-8bf4-409d-9171-9b41491d7578",
+    "qType": "bookmark"
+  },
+  "qMetaDef": {
+    "title": "Animais",
+    "description": ""
+  },
+  "creationDate": "2022-05-03T15:20:23.566Z",
+  "sheetId": "83ff8084-32b1-439d-a418-a957fb3100cc",
+  "selectionFields": "Atividade Descrição",
+  "qBookMark": {
+    "qStateData": [
+      {
+        "qStateName": "$",
+        "qFieldItems": [
+          {
+            "qDef": {
+              "qName": "Atividade Descrição",
+              "qType": "NOT_PRESENT"
+            },
+            "qSelectInfo": {
+              "qRangeLo": "NaN",
+              "qRangeHi": "NaN",
+              "qNumberFormat": {
+                "qType": "U",
+                "qnDec": 10,
+                "qUseThou": 0
+              },
+              "qRangeInfo": [],
+              "qContinuousRangeInfo": []
+            },
+            "qValues": [
+              {
+                "qText": "Vistoriados",
+                "qNumber": "NaN"
+              },
+              {
+                "qText": "FÊMEA LEITÃO",
+                "qNumber": "NaN"
+              },
+              {
+                "qText": "FÊMEA ADULTO",
+                "qNumber": "NaN"
+              },
+              {
+                "qText": "MACHO LEITÃO",
+                "qNumber": "NaN"
+              },
+              {
+                "qText": "MACHO ADULTO",
+                "qNumber": "NaN"
+              }
+            ],
+            "qExcludedValues": []
+          }
+        ]
+      }
+    ],
+    "qVariableItems": [],
+    "qPatches": []
+  }
+}

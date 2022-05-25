@@ -1,0 +1,15 @@
+{
+  "qInfo": {
+    "qId": "3ecd87d2-abe8-4666-b2d4-76293a3b2603",
+    "qType": "variable"
+  },
+  "qMetaDef": {},
+  "qName": "v.Base.Saneamentos_Fiscalizacao",
+  "qNumberPresentation": {
+    "qType": "U",
+    "qnDec": 10,
+    "qUseThou": 0
+  },
+  "qDefinition": "lib://PASTA/Saneamentos/Fiscalizacao",
+  "qIsScriptCreated": true
+}

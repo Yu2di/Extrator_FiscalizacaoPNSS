@@ -1,0 +1,155 @@
+{
+  "qProperty": {
+    "qInfo": {
+      "qId": "6d8dc52b-2e38-4b0c-acfa-80f2d05eeae8",
+      "qType": "masterobject"
+    },
+    "qMetaDef": {
+      "title": "Qtd de relatório",
+      "description": "",
+      "tags": []
+    },
+    "qHyperCubeDef": {
+      "qDimensions": [],
+      "qMeasures": [
+        {
+          "qDef": {
+            "qLabel": "Fiscalizados",
+            "qTags": [],
+            "qGrouping": "N",
+            "qDef": "=Count({< [1 - Estabelecimentos rurais localizados em fronteiras internacionais ou divisas com Estados, países ou zonas não livres de PSC, PSA e PRRS] = {\"*\"} ,\r\n [Possui animais ?]  = {\"Sim\"}\n\t>}\n [Nº do Relatório])",
+            "qNumFormat": {
+              "qType": "F",
+              "qnDec": 2,
+              "qUseThou": 0,
+              "qFmt": "#.##0",
+              "qDec": ",",
+              "qThou": "."
+            },
+            "qAccumulate": 0,
+            "qActiveExpression": 0,
+            "qExpressions": [],
+            "autoSort": true,
+            "cId": "pgqUzpP",
+            "numFormatFromTemplate": true,
+            "measureAxis": {
+              "min": 0,
+              "max": 100
+            },
+            "conditionalColoring": {
+              "useConditionalColoring": false,
+              "singleColor": 3,
+              "paletteSingleColor": {
+                "index": 6
+              },
+              "segments": {
+                "limits": [],
+                "paletteColors": [
+                  {
+                    "index": 6
+                  }
+                ]
+              }
+            },
+            "isCustomFormatted": false
+          },
+          "qSortBy": {
+            "qSortByNumeric": -1,
+            "qSortByLoadOrder": 1,
+            "qExpression": {}
+          },
+          "qAttributeExpressions": [],
+          "qAttributeDimensions": [],
+          "qCalcCond": {},
+          "qCalcCondition": {
+            "qCond": {},
+            "qMsg": {}
+          },
+          "qTrendLines": [],
+          "qMiniChartDef": {
+            "qSortBy": {
+              "qExpression": {}
+            },
+            "qOtherTotalSpec": {
+              "qOtherMode": "OTHER_OFF",
+              "qOtherCounted": {},
+              "qOtherLimit": {},
+              "qOtherLimitMode": "OTHER_GT_LIMIT",
+              "qForceBadValueKeeping": true,
+              "qApplyEvenWhenPossiblyWrongResult": true,
+              "qOtherSortMode": "OTHER_SORT_DESCENDING",
+              "qTotalMode": "TOTAL_OFF",
+              "qReferencedExpression": {}
+            },
+            "qMaxNumberPoints": -1,
+            "qAttributeExpressions": []
+          }
+        }
+      ],
+      "qInterColumnSortOrder": [
+        0
+      ],
+      "qSuppressMissing": true,
+      "qInitialDataFetch": [
+        {
+          "qLeft": 0,
+          "qTop": 0,
+          "qWidth": 500,
+          "qHeight": 10
+        }
+      ],
+      "qReductionMode": "N",
+      "qMode": "S",
+      "qPseudoDimPos": -1,
+      "qNoOfLeftDims": -1,
+      "qMaxStackedCells": 5000,
+      "qCalcCond": {},
+      "qTitle": {},
+      "qCalcCondition": {
+        "qCond": {},
+        "qMsg": {}
+      },
+      "qColumnOrder": [],
+      "qExpansionState": [],
+      "qLayoutExclude": {
+        "qHyperCubeDef": {
+          "qDimensions": [],
+          "qMeasures": [],
+          "qInterColumnSortOrder": [],
+          "qInitialDataFetch": [],
+          "qReductionMode": "N",
+          "qMode": "S",
+          "qPseudoDimPos": -1,
+          "qNoOfLeftDims": -1,
+          "qMaxStackedCells": 5000,
+          "qCalcCond": {},
+          "qTitle": {},
+          "qCalcCondition": {
+            "qCond": {},
+            "qMsg": {}
+          },
+          "qColumnOrder": [],
+          "qExpansionState": []
+        }
+      }
+    },
+    "showTitles": true,
+    "title": "Quantidades de relatórios que possui risco PNSS com animais",
+    "subtitle": "",
+    "footnote": "",
+    "disableNavMenu": false,
+    "showDetails": false,
+    "showMeasureTitle": true,
+    "showSecondMeasureTitle": true,
+    "textAlign": "center",
+    "layoutBehavior": "responsive",
+    "fontSize": "M",
+    "useLink": false,
+    "sheetLink": "",
+    "openUrlInNewTab": true,
+    "visualization": "kpi",
+    "version": "0.1.0",
+    "masterVersion": 0.96
+  },
+  "qChildren": []
+}

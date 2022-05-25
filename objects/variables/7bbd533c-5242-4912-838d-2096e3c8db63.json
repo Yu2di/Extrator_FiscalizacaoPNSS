@@ -1,0 +1,15 @@
+{
+  "qInfo": {
+    "qId": "7bbd533c-5242-4912-838d-2096e3c8db63",
+    "qType": "variable"
+  },
+  "qMetaDef": {},
+  "qName": "v.Tabela.Nucleo",
+  "qNumberPresentation": {
+    "qType": "U",
+    "qnDec": 10,
+    "qUseThou": 0
+  },
+  "qDefinition": "Nucleo",
+  "qIsScriptCreated": true
+}

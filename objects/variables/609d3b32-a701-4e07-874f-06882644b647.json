@@ -1,0 +1,15 @@
+{
+  "qInfo": {
+    "qId": "609d3b32-a701-4e07-874f-06882644b647",
+    "qType": "variable"
+  },
+  "qMetaDef": {},
+  "qName": "v.Base.SaneamentosSaldos",
+  "qNumberPresentation": {
+    "qType": "U",
+    "qnDec": 10,
+    "qUseThou": 0
+  },
+  "qDefinition": "lib://PASTA/Saneamentos/Saldos",
+  "qIsScriptCreated": true
+}

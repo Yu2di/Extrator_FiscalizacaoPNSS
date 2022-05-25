@@ -1,0 +1,15 @@
+{
+  "qInfo": {
+    "qId": "1b4a8c5e-3e19-4624-990d-5a057c2f09be",
+    "qType": "variable"
+  },
+  "qMetaDef": {},
+  "qName": "v.Base.Extraidos",
+  "qNumberPresentation": {
+    "qType": "U",
+    "qnDec": 10,
+    "qUseThou": 0
+  },
+  "qDefinition": "lib://PASTA/Extraidos/PropriedadesFichasSanitarias",
+  "qIsScriptCreated": true
+}
