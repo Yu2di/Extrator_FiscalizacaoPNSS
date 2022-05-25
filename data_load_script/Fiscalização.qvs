@@ -1,0 +1,170 @@
+///$tab Fiscalização
+[FiscalizacaoAtividade]:
+LOAD
+    AutoNumberHash128("Fiscalização Atividade ID") as chave_fiscalizacao_atividade,
+     AutoNumberHash128("Fiscalização Atividade Grupo ID") as chave_grupo,
+    AutoNumberHash128( "Fiscalização Resposta" & '|' & "Fiscalização Atividade Grupo ID") as chave_grupo_atividade,
+    [Fiscalização Atividade ID],
+    "Fiscalização ID",
+    "Fiscalização Atividade Grupo ID",
+    "Fiscalização Resposta"
+FROM [$(v.Base.Saneamentos_Fiscalizacao)/FiscalizacaoAtividade.qvd]
+(qvd);
+
+Right Join (FiscalizacaoAtividade)
+[AtividadeGrupo]:
+LOAD
+    AutoNumberHash128([A.G. Atividade Grupo ID])  as chave_grupo,
+    AutoNumberHash128([A.G. Atividade ID]) as chave_atividade,
+    "A.G. Classificação",
+    "A.G. Atividade",
+    "A.G. Tipo Campo ID",
+    "A.G. Tipo Campo"
+FROM [lib://QVD/Saneamentos/Fiscalizacao/AtividadeGrupo.qvd] (qvd)
+Where  WildMatch([A.G. Classificação],'3*', '1.1.1', '2.1', '1'); //Suinos
+/*
+'3.1','9*', '', '1*', '3.1.3.6.2', 
+'3.1.1*', // vistoriados
+'3.1.3*', //Inspecionados
+'2.1', '1'//Dados da entrega de material
+);  
+
+/*
+LOAD
+    "A.G. Atividade Grupo ID",
+    "A.G. Classificação",
+    "A.G. Ordenação",
+    "A.G. Obrigatório",
+    "A.G. Atividade ID",
+    "A.G. Atividade",
+    "A.G. Tipo Campo ID",
+    "A.G. Tipo Campo",
+    "A.G. Versão Grupo Atividade ID",
+    "A.G. Atividade Grupo ID Pertence"
+FROM [lib://QVD/Saneamentos/Fiscalizacao/AtividadeGrupo.qvd]
+(qvd); */
+
+
+Left Join (FiscalizacaoAtividade)
+[Atividade]:
+LOAD
+    AutoNumberHash128("Atividade ID") as chave_atividade,
+    "Atividade ID",
+    "Atividade Descrição"
+FROM [lib://QVD/Saneamentos/Fiscalizacao/Atividade.qvd]
+(qvd);
+
+Left Join (FiscalizacaoAtividade)
+[Atividade Resposta]:
+LOAD
+     AutoNumberHash128("Atividade Resposta ID" & '|' & "Atividade Resposta Grupo ID") as chave_grupo_atividade,
+    "Atividade Resposta Descrição"
+FROM [lib://QVD/Saneamentos/Fiscalizacao/AtividadeResposta.qvd]
+(qvd);
+
+
+Left Join(Fiscalizacao)
+[Fato_fiscalizacao_atividade]: 
+	Load 
+    AutoNumberHash128("Fiscalização ID") as chave_fiscalizao_id,
+    chave_fiscalizacao_atividade,
+    "Fiscalização ID",
+    "Fiscalização Atividade Grupo ID",
+    "Fiscalização Resposta",
+    "A.G. Classificação",
+    [Atividade ID],
+    "Atividade Descrição",
+    "A.G. Atividade",
+    "A.G. Tipo Campo ID",
+    "A.G. Tipo Campo",
+    [Atividade Resposta Descrição],
+    If("Atividade ID" = 160,if([Atividade Resposta Descrição] = Null(),"Fiscalização Resposta", [Atividade Resposta Descrição])) as 'Total de amostras - Soro Sanguíneo',
+    If(WildMatch([A.G. Classificação],'3.1.2'),   "Fiscalização Resposta") as 'Vistoriados',
+    If(WildMatch([A.G. Classificação],'3.1.2.1'),   [Atividade Resposta Descrição]) as 'Tipo de Vistoria',
+    If(WildMatch([A.G. Classificação],'3.1.2.1.1'),  "Fiscalização Resposta") as 'TOTAL DE ANIMAIS',
+    If(WildMatch([A.G. Classificação],'3.1.2.1.4'), "Fiscalização Resposta") as [TOTAL],  
+    If(WildMatch([A.G. Classificação],'3.1.2.1.5'), "Fiscalização Resposta") as 'MACHO ADULTO', 
+    If(WildMatch([A.G. Classificação],'3.1.2.1.3'), "Fiscalização Resposta") as 'FÊMEA ADULTO', 
+    If(WildMatch([A.G. Classificação],'3.1.2.1.2'), "Fiscalização Resposta") as 'FÊMEA LEITÃO', 
+    If(WildMatch([A.G. Classificação],'3.1.2.1.4'), "Fiscalização Resposta") as 'MACHO LEITÃO',
+    If(WildMatch([A.G. Classificação],'3.1.3'),   "Fiscalização Resposta") as 'Inspecionados',
+    If(WildMatch([A.G. Classificação],'3.1.3.4'), "Fiscalização Resposta")  as 'I - MACHO ADULTO', 
+    If(WildMatch([A.G. Classificação],'3.1.3.2'), "Fiscalização Resposta") as 'I - FÊMEA ADULTO', 
+    If(WildMatch([A.G. Classificação],'3.1.3.1'), "Fiscalização Resposta") as 'I - FÊMEA LEITÃO', 
+    If(WildMatch([A.G. Classificação],'3.1.3.3'), "Fiscalização Resposta")as 'I - MACHO LEITÃO',
+    If(WildMatch([A.G. Classificação],'3.1.2.1.7'), "Fiscalização Resposta") as 'Animais sem sinais clínicos de doenças',
+    If(WildMatch([A.G. Classificação],'3.1.2.1.8'), "Fiscalização Resposta") as 'Animais com estado corporal satisfatório', // 3.1.6.6
+    If(WildMatch([A.G. Classificação],'3.1.6.6', '3.1.7.2'), "Fiscalização Resposta") as 'Colheita de Material',
+    If(WildMatch([A.G. Classificação],'3.1.3.6.1'), "Fiscalização Resposta") as 'Nº de Tuberculinização realizadas',
+    If(WildMatch([A.G. Classificação],'3.1.3.6.2'), "Fiscalização Resposta") as 'Nº Leituras Realizadas'
+    RESIDENT [FiscalizacaoAtividade];
+
+Drop Table FiscalizacaoAtividade;
+
+
+Left Join(Fiscalizacao)
+[FiscalizacaoMotivoMaiorRisco]:
+LOAD
+    AutoNumberHash128("FMR Fiscalização Atividade ID") as chave_fiscalizacao_atividade,
+    [FMR Fiscalização Atividade ID],
+    AutoNumberHash128("FMR Motivo Maior Risco ID") as chave_motivo_risco,
+    "FMR Motivo Maior Risco ID",
+    "FMR Motivo Maior Risco",
+    "FMR Motivo Sigla Programa"
+FROM [lib://QVD/Saneamentos/Fiscalizacao/FiscalizacaoMotivoMaiorRisco.qvd]
+(qvd);
+
+
+
+
+Left Join(Fiscalizacao)
+[FiscalizacaoColheitaMaterial]:
+LOAD
+    AutoNumberHash128("FCM Fiscalização Atividade ID") as chave_fiscalizacao_atividade,
+    If("Fiscalização Colheita Material ID" = 38, 'Sim', 'Não') as 'Raspado de Pele',
+    If("Fiscalização Colheita Material ID" = 38, "FCM Quantidade Amostras", 0) as 'Número de Raspados de pele realizados',
+    If("Fiscalização Colheita Material ID" = 43, "FCM Quantidade Amostras", 0) as 'soro',
+    "Fiscalização Colheita Material ID",
+    "FCM Motivo Colheita ID",
+    "FCM Motivo Colheita",
+    "FCM Quantidade Amostras"
+FROM [lib://QVD/Saneamentos/Fiscalizacao/FiscalizacaoColheitaMaterial.qvd]
+(qvd);
+
+
+Left Join(Fiscalizacao)
+[FiscalizacaoNucleo]:
+LOAD
+    AutoNumberHash128([FN Fiscalização Atividade ID]) as chave_fiscalizacao_atividade,
+    AutoNumberHash128([FN Classificação Núcleo ID]) as chave_classifica_nucleo,
+    AutoNumberHash128([FN Area Atuação Núcleo ID]) as chave_area_nucleo,
+    AutoNumberHash128([FN Núcleo ID]) as chave_nucleo,
+    [FN Nome] as [Núcleo],
+    [FN Quantidade Galpões] as [Quantidade de Galpões]
+FROM [lib://QVD/Saneamentos/Fiscalizacao/FiscalizacaoNucleo.qvd]
+(qvd);
+
+
+Left Join(Fiscalizacao)
+[FiscalizacaoMedidaEducativa]:
+LOAD
+    AutoNumberHash128("Fiscalização Medida Educativa ID") as chave_medida_item,
+    AutoNumberHash128("FME Fiscalização Atividade ID") as chave_fiscalizacao_atividade,
+    AutoNumberHash128("FME Tipo Medida Educativa ID") as chave_tipo_medida,
+    "FME Tipo Medida Educativa" as [Medidas Educativas],
+    "FME Nome Evento"
+FROM [lib://QVD/Saneamentos/Fiscalizacao/FiscalizacaoMedidaEducativa.qvd]
+(qvd);
+
+
+
+Left Join(Fiscalizacao)
+[FiscalizacaoMedidaEducativaItem]:
+LOAD
+    AutoNumberHash128("FMEI Fiscalização Medida Educativa ID") as chave_medida_item,
+    AutoNumberHash128("FMEI Tipo Material Educativo ID") as chave_tipo_material,
+    "FMEI Tema",
+    "FMEI Tipo Material Educativo",
+    "FMEI Quantidade" as [Quantidade de Material Entregue]
+FROM [lib://QVD/Saneamentos/Fiscalizacao/FiscalizacaoMedidaEducativaItem.qvd]
+(qvd) WHERE WildMatch("FMEI Tema", 'PNSS');

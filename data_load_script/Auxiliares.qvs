@@ -1,0 +1,63 @@
+///$tab Auxiliares
+Left Join(Fiscalizacao)
+[Motivo]:
+LOAD
+    AutoNumberHash128("Motivo Maior Risco ID") as chave_motivo_risco,
+    If("Motivo Maior Risco ID" = 12, 'Sim', 'Não') as '1 - Estabelecimentos rurais localizados em fronteiras internacionais ou divisas com Estados, países ou zonas não livres de PSC, PSA e PRRS',
+    If("Motivo Maior Risco ID" = 13, 'Sim', 'Não') as '2 - Proximidade a reservas naturais, áreas de proteção ambiental ou parques nacionais com a presença de suínos asselvajados',
+    If("Motivo Maior Risco ID" = 14, 'Sim', 'Não') as '3 - Estabelecimentos rurais em assentamentos rurais, aldeias indígenas, áreas periurbanas, comunidades carentes ou qualquer outra situação em que a biosseguridade esteja comprometida e o sistema de pecuária exija atenção veterinária especial pelo SVO',
+    If("Motivo Maior Risco ID" = 15, 'Sim', 'Não') as '4 - Propriedades com suídeos criados extensivamente',
+    If("Motivo Maior Risco ID" = 95, 'Sim', 'Não') as '5 - Estabelecimentos rurais contíguos ou próximos a locais de ingresso internacional de pessoas e produtos como aeroportos, portos, ferrovias, rodoviárias e postos de fronteira internacional e divisas com zonas não livres',
+    If("Motivo Maior Risco ID" = 17, 'Sim', 'Não') as '6 - Estabelecimentos rurais com suínos com fornecimento de resíduos alimentares (lavagem) aos suínos',
+    If("Motivo Maior Risco ID" = 18, 'Sim', 'Não') as '7. Proximidade a lixões',
+    If("Motivo Maior Risco ID" = 19, 'Sim', 'Não') as '8 - Estabelecimentos rurais pertencentes a proprietários que mantêm suínos em diferentes estabelecimentos, especialmente em outros países ou zona não livre de PSC, PSA e PRRS',
+    If("Motivo Maior Risco ID" = 20, 'Sim', 'Não') as '9 - Estabelecimentos rurais contíguos ou próximos a abatedouros frigoríficos ou graxarias',
+    If("Motivo Maior Risco ID" = 21, 'Sim', 'Não') as '10 - Proximidade a quarentenários de suídeos',
+    If("Motivo Maior Risco ID" = 96, 'Sim', 'Não') as '11 - Estabelecimentos rurais pertencentes a proprietários que comercializam suínos para zonas não livres',
+    If("Motivo Maior Risco ID" = 97, 'Sim', 'Não') as '12 - Estabelecimentos rurais contíguos ou próximos a laboratórios autorizados a manusear material infeccioso para PSC, PSA e PRRS',
+    If("Motivo Maior Risco ID" = 98, 'Sim', 'Não') as '13 - Estabelecimento com suínos contíguos ou próximos a paradas de ônibus com origem em zonas não livres',
+    "Motivo Maior Risco Nome" as [Classificação de Risco da Propriedade - PNSS]
+FROM [lib://QVD/Saneamentos/PropriedadesFichasSanitarias/MotivoMaiorRisco.qvd](qvd)
+Where [Motivo Maior Risco Programa Vigilância ID]= 3;
+
+Right Join(Fiscalizacao)
+Equipe:
+LOAD
+     AutoNumberHash128("Equipe ID") as chave_equipe,
+    "Nome Equipe",
+    "Equipe Padrão",
+    "Equipe Divisão"														as "Área de Atuação",
+    "Equipe Veículo ID"														as "Veículo ID",
+    "Equipe Sugerir Posto Fiscal"
+FROM [$(v.Base.TransformadosFiscalizacao)/Equipe.qvd]
+(qvd) where "Equipe Divisão" = 'DDSA' OR "Equipe Divisão" = 'DDSV';
+
+Right Join(Fiscalizacao)
+EquipeParticipante:
+LOAD
+     AutoNumberHash128("Equipe Participante Equipe ID") as chave_equipe,
+     AutoNumberHash128([Equipe Participante CPF]) as chave_cargo_equipe,
+    "Equipe Participante ID",
+    "Equipe Participante Nome"												as "Participante Nome",
+    "Equipe Participante CPF"												as "Participante CPF",
+    "Equipe Participante Matrícula"											as "Participante Matrícula",
+    "Equipe Participante Fiscal Responsável"								as "Participante Responsável",
+    "Equipe Participante Equipe ID"											as "Equipe ID",
+     "Equipe Participante Função"                                           as  "Participante Função"
+FROM [$(v.Base.TransformadosFiscalizacao)/EquipeParticipante.qvd]
+(qvd) where "Equipe Participante Fiscal Responsável" = 'Responsável';
+
+
+Left Join (Fiscalizacao)
+[Núcleo]:
+LOAD
+    AutoNumberHash128([Núcleo ID]) as chave_nucleo,
+    "Núcleo Ficha Sanitária Núcleo ID",
+    "Núcleo Nome",
+    "Núcleo Area de Atuação",
+    "Núcleo Carecterística Nucleo",
+    "Núcleo Classificação", 
+    "Núcleo Quantidade Galpões" as QuantidadeGalpoes,
+    "Núcleo Capacidade Alojamento" as CapacidadeAlojamento
+FROM [lib://QVD/Transformados/PropriedadesFichasSanitarias/Nucleo.qvd]
+(qvd);

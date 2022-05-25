@@ -1,0 +1,470 @@
+///$tab Main
+SET ThousandSep='.';
+SET DecimalSep=',';
+SET MoneyThousandSep='.';
+SET MoneyDecimalSep=',';
+SET MoneyFormat='R$#.##0,00;-R$#.##0,00';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET FirstWeekDay=6;
+SET BrokenWeeks=1;
+SET ReferenceDay=0;
+SET FirstMonthOfYear=1;
+SET CollationLocale='pt-BR';
+SET CreateSearchIndexOnReload=0;
+SET MonthNames='jan;fev;mar;abr;mai;jun;jul;ago;set;out;nov;dez';
+SET LongMonthNames='janeiro;fevereiro;março;abril;maio;junho;julho;agosto;setembro;outubro;novembro;dezembro';
+SET DayNames='seg;ter;qua;qui;sex;sáb;dom';
+SET LongDayNames='segunda-feira;terça-feira;quarta-feira;quinta-feira;sexta-feira;sábado;domingo';
+SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
+
+SET v.Base.TransformadosFiscalizacao		 	= 'lib://PASTA/Transformados/Fiscalizacao';
+SET v.Base.Transformados												= 'lib://PASTA/Transformados/Saldos';
+
+SET v.Schema							= eSaniagroDadosGerenciais.dbo;
+SET v.Schema2							= eSaniagro.dbo;
+
+//Para onde:
+SET v.Base.Extraidos 					= 'lib://PASTA/Extraidos/PropriedadesFichasSanitarias';
+
+
+//Tabelas Carga Incremental 
+SET v.Tabela.Nucleo				 		= Nucleo;
+SET v.Tabela.FichaSanitariaPropriedade  = FichaSanitariaPropriedade;
+SET v.Tabela.Propriedade				= Propriedade;
+SET v.Tabela.FichaSanitaria				= FichaSanitaria;
+
+SET v.Base.Saneamentos					= 'lib://PASTA/Saneamentos/PropriedadesFichasSanitarias';
+
+SET v.Base.Saneamentos_Fiscalizacao 				= 'lib://PASTA/Saneamentos/Fiscalizacao';
+
+SET v.Base.SaneamentosSaldos											= 'lib://PASTA/Saneamentos/Saldos';
+
+LIB CONNECT TO 'S903-ITC003-SQL';
+
+
+
+///$tab Fiscalizacao
+[Fiscalizacao]: 
+LOAD
+	AutoNumberHash128("Fiscalização ID") as chave_fiscalizao_id,
+    AutoNumberHash128(text("IE/CPF/CNPJ")) as chave_iecpfcnpj,
+    AutoNumberHash128( "Fiscalização Equipe ID") as  chave_equipe,
+    "IE/CPF/CNPJ",
+    [Fiscalização ID] as [Nº do Relatório],
+    [Fiscalização Data] as [Data Fiscalização],
+     "Fiscalização Equipe ID",
+    [Fiscalização Hora/Minuto],  
+    Num(Month ([Fiscalização Data])) as [Mês da Fiscalização],
+    Year([Fiscalização Data]) as [Ano Fiscalização]
+FROM [$(v.Base.Saneamentos_Fiscalizacao)/Fiscalizacao.qvd] (qvd)
+Where Year([Fiscalização Data]) = 2022;
+
+
+
+///$tab Ficha Sanitaria
+Left Join(Fiscalizacao)
+FichaSanitaria:
+LOAD
+    AutoNumberHash128("Ficha Sanitária ID") as chave_ficha,
+    AutoNumberHash128("Ficha Sanitária IECPFCNPJ") as chave_iecpfcnpj,
+    AutoNumberHash128("Ficha Sanitária Região ID") as chave_regiao,
+    "Ficha Sanitária IECPFCNPJ",
+    [Ficha Sanitária Unidade IAGRO Regional] as [Unidade Regional],
+    "Ficha Sanitária ID",
+    [Ficha Sanitária Município ID] as [Cód. IBGE],
+    [Ficha Sanitária Município] as [Município da Fiscalização],
+    [Ficha Sanitária Tipo Propriedade] as [Tipo Local],
+    [Ficha Sanitária IDNaPGA] as [Código MAPA],
+    [Ficha Sanitária IECPFCNPJ] as [Inscrição],
+    [Ficha Sanitária Produtor Nome] as [Produtor],
+    [Ficha Sanitária Produtor CPFCNPJ] as [CPF/CNPJ],
+    [Ficha Sanitária Latitude] as [Latitude Decimal],
+    [Ficha Sanitária Longitude] as [Longitude Decimal],
+    [Ficha Sanitária Coordenada em WS] as LatitudeGrau,
+    [Ficha Sanitária Situação] as [Situação],
+    [Ficha Sanitária Propriedade Nome] as [Nome],
+    [Ficha Sanitária Produtor Email] as [E-mail],
+    [Ficha Sanitária Produtor Telefone] as [Telefone],
+    "Ficha Sanitária Propriedade ID"
+FROM [$(v.Base.Saneamentos)/FichaSanitaria.qvd]
+(qvd);
+
+Join(Fiscalizacao)
+[FichaSanitariaPropriedade]:
+LOAD
+    AutoNumberHash128("FS_P Ficha Sanitária ID") as chave_ficha,
+    "FS_P Propriedade Latitude Grau",
+    "FS_P Propriedade Latitude Minuto",
+    "FS_P Propriedade Latitude Segundo",
+     "FS_P Propriedade Latitude Grau"&'°'&"FS_P Propriedade Latitude Minuto"&Chr(96)&"FS_P Propriedade Latitude Segundo" as Latitude,
+     "FS_P Propriedade Longitude Grau"&'°'&"FS_P Propriedade Longitude Minuto"&Chr(96)&"FS_P Propriedade Longitude Segundo" as Longitude,
+    "FS_P Propriedade Latitude",
+    "FS_P Propriedade Longitude"
+FROM [lib://QVD/Saneamentos/PropriedadesFichasSanitarias/FichaSanitariaPropriedade.qvd]
+(qvd);
+
+
+
+
+///$tab Fiscalização
+[FiscalizacaoAtividade]:
+LOAD
+    AutoNumberHash128("Fiscalização Atividade ID") as chave_fiscalizacao_atividade,
+     AutoNumberHash128("Fiscalização Atividade Grupo ID") as chave_grupo,
+    AutoNumberHash128( "Fiscalização Resposta" & '|' & "Fiscalização Atividade Grupo ID") as chave_grupo_atividade,
+    [Fiscalização Atividade ID],
+    "Fiscalização ID",
+    "Fiscalização Atividade Grupo ID",
+    "Fiscalização Resposta"
+FROM [$(v.Base.Saneamentos_Fiscalizacao)/FiscalizacaoAtividade.qvd]
+(qvd);
+
+Right Join (FiscalizacaoAtividade)
+[AtividadeGrupo]:
+LOAD
+    AutoNumberHash128([A.G. Atividade Grupo ID])  as chave_grupo,
+    AutoNumberHash128([A.G. Atividade ID]) as chave_atividade,
+    "A.G. Classificação",
+    "A.G. Atividade",
+    "A.G. Tipo Campo ID",
+    "A.G. Tipo Campo"
+FROM [lib://QVD/Saneamentos/Fiscalizacao/AtividadeGrupo.qvd] (qvd)
+Where  WildMatch([A.G. Classificação],'3*', '1.1.1', '2.1', '1'); //Suinos
+/*
+'3.1','9*', '', '1*', '3.1.3.6.2', 
+'3.1.1*', // vistoriados
+'3.1.3*', //Inspecionados
+'2.1', '1'//Dados da entrega de material
+);  
+
+/*
+LOAD
+    "A.G. Atividade Grupo ID",
+    "A.G. Classificação",
+    "A.G. Ordenação",
+    "A.G. Obrigatório",
+    "A.G. Atividade ID",
+    "A.G. Atividade",
+    "A.G. Tipo Campo ID",
+    "A.G. Tipo Campo",
+    "A.G. Versão Grupo Atividade ID",
+    "A.G. Atividade Grupo ID Pertence"
+FROM [lib://QVD/Saneamentos/Fiscalizacao/AtividadeGrupo.qvd]
+(qvd); */
+
+
+Left Join (FiscalizacaoAtividade)
+[Atividade]:
+LOAD
+    AutoNumberHash128("Atividade ID") as chave_atividade,
+    "Atividade ID",
+    "Atividade Descrição"
+FROM [lib://QVD/Saneamentos/Fiscalizacao/Atividade.qvd]
+(qvd);
+
+Left Join (FiscalizacaoAtividade)
+[Atividade Resposta]:
+LOAD
+     AutoNumberHash128("Atividade Resposta ID" & '|' & "Atividade Resposta Grupo ID") as chave_grupo_atividade,
+    "Atividade Resposta Descrição"
+FROM [lib://QVD/Saneamentos/Fiscalizacao/AtividadeResposta.qvd]
+(qvd);
+
+
+Left Join(Fiscalizacao)
+[Fato_fiscalizacao_atividade]: 
+	Load 
+    AutoNumberHash128("Fiscalização ID") as chave_fiscalizao_id,
+    chave_fiscalizacao_atividade,
+    "Fiscalização ID",
+    "Fiscalização Atividade Grupo ID",
+    "Fiscalização Resposta",
+    "A.G. Classificação",
+    [Atividade ID],
+    "Atividade Descrição",
+    "A.G. Atividade",
+    "A.G. Tipo Campo ID",
+    "A.G. Tipo Campo",
+    [Atividade Resposta Descrição],
+    If("Atividade ID" = 160,if([Atividade Resposta Descrição] = Null(),"Fiscalização Resposta", [Atividade Resposta Descrição])) as 'Total de amostras - Soro Sanguíneo',
+    If(WildMatch([A.G. Classificação],'3.1.2'),   "Fiscalização Resposta") as 'Vistoriados',
+    If(WildMatch([A.G. Classificação],'3.1.2.1'),   [Atividade Resposta Descrição]) as 'Tipo de Vistoria',
+    If(WildMatch([A.G. Classificação],'3.1.2.1.1'),  "Fiscalização Resposta") as 'TOTAL DE ANIMAIS',
+    If(WildMatch([A.G. Classificação],'3.1.2.1.4'), "Fiscalização Resposta") as [TOTAL],  
+    If(WildMatch([A.G. Classificação],'3.1.2.1.5'), "Fiscalização Resposta") as 'MACHO ADULTO', 
+    If(WildMatch([A.G. Classificação],'3.1.2.1.3'), "Fiscalização Resposta") as 'FÊMEA ADULTO', 
+    If(WildMatch([A.G. Classificação],'3.1.2.1.2'), "Fiscalização Resposta") as 'FÊMEA LEITÃO', 
+    If(WildMatch([A.G. Classificação],'3.1.2.1.4'), "Fiscalização Resposta") as 'MACHO LEITÃO',
+    If(WildMatch([A.G. Classificação],'3.1.3'),   "Fiscalização Resposta") as 'Inspecionados',
+    If(WildMatch([A.G. Classificação],'3.1.3.4'), "Fiscalização Resposta")  as 'I - MACHO ADULTO', 
+    If(WildMatch([A.G. Classificação],'3.1.3.2'), "Fiscalização Resposta") as 'I - FÊMEA ADULTO', 
+    If(WildMatch([A.G. Classificação],'3.1.3.1'), "Fiscalização Resposta") as 'I - FÊMEA LEITÃO', 
+    If(WildMatch([A.G. Classificação],'3.1.3.3'), "Fiscalização Resposta")as 'I - MACHO LEITÃO',
+    If(WildMatch([A.G. Classificação],'3.1.2.1.7'), "Fiscalização Resposta") as 'Animais sem sinais clínicos de doenças',
+    If(WildMatch([A.G. Classificação],'3.1.2.1.8'), "Fiscalização Resposta") as 'Animais com estado corporal satisfatório', // 3.1.6.6
+    If(WildMatch([A.G. Classificação],'3.1.6.6', '3.1.7.2'), "Fiscalização Resposta") as 'Colheita de Material',
+    If(WildMatch([A.G. Classificação],'3.1.3.6.1'), "Fiscalização Resposta") as 'Nº de Tuberculinização realizadas',
+    If(WildMatch([A.G. Classificação],'3.1.3.6.2'), "Fiscalização Resposta") as 'Nº Leituras Realizadas'
+    RESIDENT [FiscalizacaoAtividade];
+
+Drop Table FiscalizacaoAtividade;
+
+
+Left Join(Fiscalizacao)
+[FiscalizacaoMotivoMaiorRisco]:
+LOAD
+    AutoNumberHash128("FMR Fiscalização Atividade ID") as chave_fiscalizacao_atividade,
+    [FMR Fiscalização Atividade ID],
+    AutoNumberHash128("FMR Motivo Maior Risco ID") as chave_motivo_risco,
+    "FMR Motivo Maior Risco ID",
+    "FMR Motivo Maior Risco",
+    "FMR Motivo Sigla Programa"
+FROM [lib://QVD/Saneamentos/Fiscalizacao/FiscalizacaoMotivoMaiorRisco.qvd]
+(qvd);
+
+
+
+
+Left Join(Fiscalizacao)
+[FiscalizacaoColheitaMaterial]:
+LOAD
+    AutoNumberHash128("FCM Fiscalização Atividade ID") as chave_fiscalizacao_atividade,
+    If("Fiscalização Colheita Material ID" = 38, 'Sim', 'Não') as 'Raspado de Pele',
+    If("Fiscalização Colheita Material ID" = 38, "FCM Quantidade Amostras", 0) as 'Número de Raspados de pele realizados',
+    If("Fiscalização Colheita Material ID" = 43, "FCM Quantidade Amostras", 0) as 'soro',
+    "Fiscalização Colheita Material ID",
+    "FCM Motivo Colheita ID",
+    "FCM Motivo Colheita",
+    "FCM Quantidade Amostras"
+FROM [lib://QVD/Saneamentos/Fiscalizacao/FiscalizacaoColheitaMaterial.qvd]
+(qvd);
+
+
+Left Join(Fiscalizacao)
+[FiscalizacaoNucleo]:
+LOAD
+    AutoNumberHash128([FN Fiscalização Atividade ID]) as chave_fiscalizacao_atividade,
+    AutoNumberHash128([FN Classificação Núcleo ID]) as chave_classifica_nucleo,
+    AutoNumberHash128([FN Area Atuação Núcleo ID]) as chave_area_nucleo,
+    AutoNumberHash128([FN Núcleo ID]) as chave_nucleo,
+    [FN Nome] as [Núcleo],
+    [FN Quantidade Galpões] as [Quantidade de Galpões]
+FROM [lib://QVD/Saneamentos/Fiscalizacao/FiscalizacaoNucleo.qvd]
+(qvd);
+
+
+Left Join(Fiscalizacao)
+[FiscalizacaoMedidaEducativa]:
+LOAD
+    AutoNumberHash128("Fiscalização Medida Educativa ID") as chave_medida_item,
+    AutoNumberHash128("FME Fiscalização Atividade ID") as chave_fiscalizacao_atividade,
+    AutoNumberHash128("FME Tipo Medida Educativa ID") as chave_tipo_medida,
+    "FME Tipo Medida Educativa" as [Medidas Educativas],
+    "FME Nome Evento"
+FROM [lib://QVD/Saneamentos/Fiscalizacao/FiscalizacaoMedidaEducativa.qvd]
+(qvd);
+
+
+
+Left Join(Fiscalizacao)
+[FiscalizacaoMedidaEducativaItem]:
+LOAD
+    AutoNumberHash128("FMEI Fiscalização Medida Educativa ID") as chave_medida_item,
+    AutoNumberHash128("FMEI Tipo Material Educativo ID") as chave_tipo_material,
+    "FMEI Tema",
+    "FMEI Tipo Material Educativo",
+    "FMEI Quantidade" as [Quantidade de Material Entregue]
+FROM [lib://QVD/Saneamentos/Fiscalizacao/FiscalizacaoMedidaEducativaItem.qvd]
+(qvd) WHERE WildMatch("FMEI Tema", 'PNSS');
+
+
+
+
+
+
+///$tab Auxiliares
+Left Join(Fiscalizacao)
+[Motivo]:
+LOAD
+    AutoNumberHash128("Motivo Maior Risco ID") as chave_motivo_risco,
+    If("Motivo Maior Risco ID" = 12, 'Sim', 'Não') as '1 - Estabelecimentos rurais localizados em fronteiras internacionais ou divisas com Estados, países ou zonas não livres de PSC, PSA e PRRS',
+    If("Motivo Maior Risco ID" = 13, 'Sim', 'Não') as '2 - Proximidade a reservas naturais, áreas de proteção ambiental ou parques nacionais com a presença de suínos asselvajados',
+    If("Motivo Maior Risco ID" = 14, 'Sim', 'Não') as '3 - Estabelecimentos rurais em assentamentos rurais, aldeias indígenas, áreas periurbanas, comunidades carentes ou qualquer outra situação em que a biosseguridade esteja comprometida e o sistema de pecuária exija atenção veterinária especial pelo SVO',
+    If("Motivo Maior Risco ID" = 15, 'Sim', 'Não') as '4 - Propriedades com suídeos criados extensivamente',
+    If("Motivo Maior Risco ID" = 95, 'Sim', 'Não') as '5 - Estabelecimentos rurais contíguos ou próximos a locais de ingresso internacional de pessoas e produtos como aeroportos, portos, ferrovias, rodoviárias e postos de fronteira internacional e divisas com zonas não livres',
+    If("Motivo Maior Risco ID" = 17, 'Sim', 'Não') as '6 - Estabelecimentos rurais com suínos com fornecimento de resíduos alimentares (lavagem) aos suínos',
+    If("Motivo Maior Risco ID" = 18, 'Sim', 'Não') as '7. Proximidade a lixões',
+    If("Motivo Maior Risco ID" = 19, 'Sim', 'Não') as '8 - Estabelecimentos rurais pertencentes a proprietários que mantêm suínos em diferentes estabelecimentos, especialmente em outros países ou zona não livre de PSC, PSA e PRRS',
+    If("Motivo Maior Risco ID" = 20, 'Sim', 'Não') as '9 - Estabelecimentos rurais contíguos ou próximos a abatedouros frigoríficos ou graxarias',
+    If("Motivo Maior Risco ID" = 21, 'Sim', 'Não') as '10 - Proximidade a quarentenários de suídeos',
+    If("Motivo Maior Risco ID" = 96, 'Sim', 'Não') as '11 - Estabelecimentos rurais pertencentes a proprietários que comercializam suínos para zonas não livres',
+    If("Motivo Maior Risco ID" = 97, 'Sim', 'Não') as '12 - Estabelecimentos rurais contíguos ou próximos a laboratórios autorizados a manusear material infeccioso para PSC, PSA e PRRS',
+    If("Motivo Maior Risco ID" = 98, 'Sim', 'Não') as '13 - Estabelecimento com suínos contíguos ou próximos a paradas de ônibus com origem em zonas não livres',
+    "Motivo Maior Risco Nome" as [Classificação de Risco da Propriedade - PNSS]
+FROM [lib://QVD/Saneamentos/PropriedadesFichasSanitarias/MotivoMaiorRisco.qvd](qvd)
+Where [Motivo Maior Risco Programa Vigilância ID]= 3;
+
+Right Join(Fiscalizacao)
+Equipe:
+LOAD
+     AutoNumberHash128("Equipe ID") as chave_equipe,
+    "Nome Equipe",
+    "Equipe Padrão",
+    "Equipe Divisão"														as "Área de Atuação",
+    "Equipe Veículo ID"														as "Veículo ID",
+    "Equipe Sugerir Posto Fiscal"
+FROM [$(v.Base.TransformadosFiscalizacao)/Equipe.qvd]
+(qvd) where "Equipe Divisão" = 'DDSA' OR "Equipe Divisão" = 'DDSV';
+
+Right Join(Fiscalizacao)
+EquipeParticipante:
+LOAD
+     AutoNumberHash128("Equipe Participante Equipe ID") as chave_equipe,
+     AutoNumberHash128([Equipe Participante CPF]) as chave_cargo_equipe,
+    "Equipe Participante ID",
+    "Equipe Participante Nome"												as "Participante Nome",
+    "Equipe Participante CPF"												as "Participante CPF",
+    "Equipe Participante Matrícula"											as "Participante Matrícula",
+    "Equipe Participante Fiscal Responsável"								as "Participante Responsável",
+    "Equipe Participante Equipe ID"											as "Equipe ID",
+     "Equipe Participante Função"                                           as  "Participante Função"
+FROM [$(v.Base.TransformadosFiscalizacao)/EquipeParticipante.qvd]
+(qvd) where "Equipe Participante Fiscal Responsável" = 'Responsável';
+
+
+Left Join (Fiscalizacao)
+[Núcleo]:
+LOAD
+    AutoNumberHash128([Núcleo ID]) as chave_nucleo,
+    "Núcleo Ficha Sanitária Núcleo ID",
+    "Núcleo Nome",
+    "Núcleo Area de Atuação",
+    "Núcleo Carecterística Nucleo",
+    "Núcleo Classificação", 
+    "Núcleo Quantidade Galpões" as QuantidadeGalpoes,
+    "Núcleo Capacidade Alojamento" as CapacidadeAlojamento
+FROM [lib://QVD/Transformados/PropriedadesFichasSanitarias/Nucleo.qvd]
+(qvd);
+
+
+///$tab Seção
+[Atividade_Suinos]: 
+	Load
+   // [chave_cargo_equipe],
+    1 as flag,
+    "Ficha Sanitária Propriedade ID",
+    [Participante CPF] as chave_cargo_equipe,
+    [Nº do Relatório],
+    [Data Fiscalização],
+    [Fiscalização Hora/Minuto],
+    [Mês da Fiscalização],
+    [Ano Fiscalização],
+    [Unidade Regional],
+    [Cód. IBGE],
+    [Município da Fiscalização],
+    [Tipo Local],
+    [Código MAPA],
+    [Inscrição],
+    MaxString([Núcleo]) as [Núcleo],
+    MaxString([Núcleo Classificação]) as [Núcleo Classificação],
+    MaxString( [Núcleo Area de Atuação]) as [Área de Atuação],
+    Sum( num#( CapacidadeAlojamento) ) as CapacidadeAlojamento,
+    Sum( num#( [Quantidade de Galpões])) as [Quantidade de Galpões],
+    Produtor,
+    [CPF/CNPJ],
+    Latitude,
+    Longitude,
+    [Latitude Decimal],
+    [Longitude Decimal],
+    Situação,
+    "Participante Nome",
+    "Participante Função",
+    MaxString([1 - Estabelecimentos rurais localizados em fronteiras internacionais ou divisas com Estados, países ou zonas não livres de PSC, PSA e PRRS]) as [1 - Estabelecimentos rurais localizados em fronteiras internacionais ou divisas com Estados, países ou zonas não livres de PSC, PSA e PRRS],
+    MaxString([2 - Proximidade a reservas naturais, áreas de proteção ambiental ou parques nacionais com a presença de suínos asselvajados]) as [2 - Proximidade a reservas naturais, áreas de proteção ambiental ou parques nacionais com a presença de suínos asselvajados],
+    MaxString([3 - Estabelecimentos rurais em assentamentos rurais, aldeias indígenas, áreas periurbanas, comunidades carentes ou qualquer outra situação em que a biosseguridade esteja comprometida e o sistema de pecuária exija atenção veterinária especial pelo SVO]) as [3 - Estabelecimentos rurais em assentamentos rurais, aldeias indígenas, áreas periurbanas, comunidades carentes ou qualquer outra situação em que a biosseguridade esteja comprometida e o sistema de pecuária exija atenção veterinária especial pelo SVO],
+    MaxString([4 - Propriedades com suídeos criados extensivamente]) as [4 - Propriedades com suídeos criados extensivamente],
+    MaxString([5 - Estabelecimentos rurais contíguos ou próximos a locais de ingresso internacional de pessoas e produtos como aeroportos, portos, ferrovias, rodoviárias e postos de fronteira internacional e divisas com zonas não livres]) as [5 - Estabelecimentos rurais contíguos ou próximos a locais de ingresso internacional de pessoas e produtos como aeroportos, portos, ferrovias, rodoviárias e postos de fronteira internacional e divisas com zonas não livres],    	
+    MaxString([6 - Estabelecimentos rurais com suínos com fornecimento de resíduos alimentares (lavagem) aos suínos]) as [6 - Estabelecimentos rurais com suínos com fornecimento de resíduos alimentares (lavagem) aos suínos],
+    MaxString([7. Proximidade a lixões]) as [7. Proximidade a lixões],
+    MaxString([8 - Estabelecimentos rurais pertencentes a proprietários que mantêm suínos em diferentes estabelecimentos, especialmente em outros países ou zona não livre de PSC, PSA e PRRS]) as [8 - Estabelecimentos rurais pertencentes a proprietários que mantêm suínos em diferentes estabelecimentos, especialmente em outros países ou zona não livre de PSC, PSA e PRRS],
+    MaxString([9 - Estabelecimentos rurais contíguos ou próximos a abatedouros frigoríficos ou graxarias]) as [9 - Estabelecimentos rurais contíguos ou próximos a abatedouros frigoríficos ou graxarias],
+    MaxString([10 - Proximidade a quarentenários de suídeos]) as [10 - Proximidade a quarentenários de suídeos],
+    MaxString([11 - Estabelecimentos rurais pertencentes a proprietários que comercializam suínos para zonas não livres]) as [11 - Estabelecimentos rurais pertencentes a proprietários que comercializam suínos para zonas não livres],
+    MaxString([12 - Estabelecimentos rurais contíguos ou próximos a laboratórios autorizados a manusear material infeccioso para PSC, PSA e PRRS]) as [12 - Estabelecimentos rurais contíguos ou próximos a laboratórios autorizados a manusear material infeccioso para PSC, PSA e PRRS], 
+    MaxString([13 - Estabelecimento com suínos contíguos ou próximos a paradas de ônibus com origem em zonas não livres]) as [13 - Estabelecimento com suínos contíguos ou próximos a paradas de ônibus com origem em zonas não livres],
+    MaxString([Vistoriados]) as [Vistoriados],
+    MaxString([Tipo de Vistoria]) as [Tipo de Vistoria],
+    Sum(num#([TOTAL DE ANIMAIS])) as [TOTAL DE ANIMAIS],
+    Sum(num#( [MACHO ADULTO])) as [MACHO ADULTO],
+    Sum(num#([FÊMEA ADULTO])) as [FÊMEA ADULTO],
+    Sum(num#([MACHO LEITÃO])) as [MACHO LEITÃO],
+    Sum(num#([FÊMEA LEITÃO])) as [FÊMEA LEITÃO],
+    MaxString([Inspecionados]) as [Inspecionados],
+    Sum(num#([I - MACHO ADULTO])) as [I - MACHO ADULTO],
+    Sum(num#([I - FÊMEA ADULTO])) as [I - FÊMEA ADULTO],
+    Sum(num#([I - MACHO LEITÃO])) as [I - MACHO LEITÃO],
+    Sum(num#([I - FÊMEA LEITÃO])) as [I - FÊMEA LEITÃO],
+    if(Sum(num#([TOTAL DE ANIMAIS])) + Sum(num#( [MACHO ADULTO])) +  Sum(num#([FÊMEA ADULTO])) +  Sum(num#([MACHO LEITÃO])) + Sum(num#([FÊMEA LEITÃO])) + 
+      Sum(num#([I - MACHO ADULTO]))  +  Sum(num#([I - FÊMEA ADULTO])) +  Sum(num#([I - MACHO LEITÃO])) +  Sum(num#([I - FÊMEA LEITÃO])) = 0, 'Não', 'Sim')as [Possui animais ?],
+    MaxString([Animais sem sinais clínicos de doenças]) as [Animais sem sinais clínicos de doenças],
+    MaxString([Animais com estado corporal satisfatório]) as [Animais com estado corporal satisfatório],
+    MaxString([Colheita de Material]) as [Colheita de Material],
+    Sum(num#(soro)) as [Total de amostras - Soro Sanguíneo],
+    Sum(num#([Nº de Tuberculinização realizadas] )) as [Nº de Tuberculinização realizadas],
+    Sum(num#([Nº Leituras Realizadas] )) as [Nº Leituras Realizadas],
+    MaxString( [Raspado de Pele]) as [Raspado de Pele],
+    MAX(num#([Número de Raspados de pele realizados])) as [Número de Raspados de pele realizados],
+    MaxString( [Medidas Educativas]) as [Medidas Educativas],
+    MAX(num#([Quantidade de Material Entregue])) as [Quantidade de Material Entregue],
+    MaxString( [FMEI Tipo Material Educativo] ) as [FMEI Tipo Material Educativo] ,
+    MaxString([FMEI Tema]) as [FMEI Tema],
+    Nome,
+    [E-mail],
+    Telefone,
+    [Nome Equipe]
+    RESIDENT [Fiscalizacao]
+    Group by
+    "Ficha Sanitária Propriedade ID",
+    [Participante CPF],
+    [Nº do Relatório],
+    [Data Fiscalização],
+    [Fiscalização Hora/Minuto],
+    [Mês da Fiscalização],
+    [Ano Fiscalização],
+    [Unidade Regional],
+    [Cód. IBGE],
+    [Município da Fiscalização],
+    [Tipo Local],
+    [Código MAPA],
+    [Inscrição],
+    Produtor,
+    [CPF/CNPJ],
+    Latitude,
+    Longitude,
+    [Latitude Decimal],
+    [Longitude Decimal],
+    Situação,
+    "Participante Nome",
+    "Participante Função",
+    Nome,
+    [E-mail],
+    Telefone,
+    [Nome Equipe];
+
+Drop Table Fiscalizacao;
+
+/*
+Left Keep(Atividade_Suinos)
+AIMImpressao:
+LOAD
+    [PessoaEmitenteCPFCNPJ] as chave_cargo_equipe,
+    PessoaEmitenteCPFCNPJ							as "CPF/CNPJ da Pessoa Emitente",
+    PessoaEmitenteNome								as "Nome da Pessoa Emitente",
+    CargoIDPessoaEmitente							as "ID do Cargo da Pessoa Emitente",
+    CargoNomePessoaEmitente							as "Nome do Cargo da Pessoa Emitente",
+    MatriculaPessoaEmitente							as "Matricula da Pessoa Emitente"
+FROM [lib://PASTA/Extraidos/GTADTA/GTADTA_*2022*.qvd] (qvd)
+Where IsNull(CargoIDPessoaEmitente) = 0 */
+; 

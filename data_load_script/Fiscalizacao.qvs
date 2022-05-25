@@ -1,0 +1,15 @@
+///$tab Fiscalizacao
+[Fiscalizacao]: 
+LOAD
+	AutoNumberHash128("Fiscalização ID") as chave_fiscalizao_id,
+    AutoNumberHash128(text("IE/CPF/CNPJ")) as chave_iecpfcnpj,
+    AutoNumberHash128( "Fiscalização Equipe ID") as  chave_equipe,
+    "IE/CPF/CNPJ",
+    [Fiscalização ID] as [Nº do Relatório],
+    [Fiscalização Data] as [Data Fiscalização],
+     "Fiscalização Equipe ID",
+    [Fiscalização Hora/Minuto],  
+    Num(Month ([Fiscalização Data])) as [Mês da Fiscalização],
+    Year([Fiscalização Data]) as [Ano Fiscalização]
+FROM [$(v.Base.Saneamentos_Fiscalizacao)/Fiscalizacao.qvd] (qvd)
+Where Year([Fiscalização Data]) = 2022;

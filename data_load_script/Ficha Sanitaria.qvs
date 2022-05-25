@@ -1,0 +1,41 @@
+///$tab Ficha Sanitaria
+Left Join(Fiscalizacao)
+FichaSanitaria:
+LOAD
+    AutoNumberHash128("Ficha Sanitária ID") as chave_ficha,
+    AutoNumberHash128("Ficha Sanitária IECPFCNPJ") as chave_iecpfcnpj,
+    AutoNumberHash128("Ficha Sanitária Região ID") as chave_regiao,
+    "Ficha Sanitária IECPFCNPJ",
+    [Ficha Sanitária Unidade IAGRO Regional] as [Unidade Regional],
+    "Ficha Sanitária ID",
+    [Ficha Sanitária Município ID] as [Cód. IBGE],
+    [Ficha Sanitária Município] as [Município da Fiscalização],
+    [Ficha Sanitária Tipo Propriedade] as [Tipo Local],
+    [Ficha Sanitária IDNaPGA] as [Código MAPA],
+    [Ficha Sanitária IECPFCNPJ] as [Inscrição],
+    [Ficha Sanitária Produtor Nome] as [Produtor],
+    [Ficha Sanitária Produtor CPFCNPJ] as [CPF/CNPJ],
+    [Ficha Sanitária Latitude] as [Latitude Decimal],
+    [Ficha Sanitária Longitude] as [Longitude Decimal],
+    [Ficha Sanitária Coordenada em WS] as LatitudeGrau,
+    [Ficha Sanitária Situação] as [Situação],
+    [Ficha Sanitária Propriedade Nome] as [Nome],
+    [Ficha Sanitária Produtor Email] as [E-mail],
+    [Ficha Sanitária Produtor Telefone] as [Telefone],
+    "Ficha Sanitária Propriedade ID"
+FROM [$(v.Base.Saneamentos)/FichaSanitaria.qvd]
+(qvd);
+
+Join(Fiscalizacao)
+[FichaSanitariaPropriedade]:
+LOAD
+    AutoNumberHash128("FS_P Ficha Sanitária ID") as chave_ficha,
+    "FS_P Propriedade Latitude Grau",
+    "FS_P Propriedade Latitude Minuto",
+    "FS_P Propriedade Latitude Segundo",
+     "FS_P Propriedade Latitude Grau"&'°'&"FS_P Propriedade Latitude Minuto"&Chr(96)&"FS_P Propriedade Latitude Segundo" as Latitude,
+     "FS_P Propriedade Longitude Grau"&'°'&"FS_P Propriedade Longitude Minuto"&Chr(96)&"FS_P Propriedade Longitude Segundo" as Longitude,
+    "FS_P Propriedade Latitude",
+    "FS_P Propriedade Longitude"
+FROM [lib://QVD/Saneamentos/PropriedadesFichasSanitarias/FichaSanitariaPropriedade.qvd]
+(qvd);
